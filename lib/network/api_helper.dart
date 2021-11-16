@@ -7,4 +7,10 @@ class ApiHelper {
     var response = await http.get(Uri.parse("$baseUrl/heroes"));
     return response;
   }
+
+  Future getSearchHeroesByKeyword(String keyword) async {
+    var response = await http.get(Uri.parse("$baseUrl/heroes?q=$keyword"));
+    print("ini keyword " + response.body);
+    return response;
+  }
 }

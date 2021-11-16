@@ -19,4 +19,16 @@ class ApiRepository {
       throw Exception('error getting heroes');
     }
   }
+
+  Future getSearchHeroesByKeyword(String keyword) async {
+    var response = await appDataManager.apiHelper.getSearchHeroesByKeyword(keyword);
+    if (NetworkUtils.isReqSuccess(response)) {
+      data = json.decode(response.body);
+      return data.map((value) {
+        return HeroesModel.fromJson(value);
+      }).toList();
+    } else {
+      throw Exception('error getting heroes');
+    }
+  }
 }

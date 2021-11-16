@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:heroes_app/model/heroes_model.dart';
 
 class HomeWidget extends StatelessWidget {
@@ -16,6 +15,7 @@ class HomeWidget extends StatelessWidget {
             crossAxisSpacing: 5,
             mainAxisSpacing: 10),
         shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
         itemCount: dataHero?.length,
         itemBuilder: (BuildContext ctx, i) {
           return GestureDetector(
