@@ -53,6 +53,19 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       } catch (e) {
         yield HomeErrorState(errorMessage: e.toString());
       }
+    } else if (event is GetSearchByBirthList) {
+      try {
+        yield HomeLoadingState();
+        final List<HeroesModel> heroesModel = await apiRepository
+            .getSearchHeroesByBirth(event.startYear, event.endYear);
+        if (heroesModel.isNotEmpty) {
+          yield HomeSuccessState(heroes: heroesModel);
+        } else {
+          yield HomeEmptyState();
+        }
+      } catch (e) {
+        yield HomeErrorState(errorMessage: e.toString());
+      }
     }
   }
 }

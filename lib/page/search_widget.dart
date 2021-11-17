@@ -27,7 +27,7 @@ class _SearchWidgetState extends State<SearchWidget> {
   Widget build(BuildContext context) {
     return widget.currentSearch == "keyword"
         ? displaySearchKeyword()
-        : widget.currentSearch == "alive"
+        : widget.currentSearch == "alive" || widget.currentSearch == "birth"
             ? displaySearchAliveYear()
             : Container();
   }
@@ -104,9 +104,15 @@ class _SearchWidgetState extends State<SearchWidget> {
         widget.searchEndYearCont!.text.isNotEmpty) {
       print("cari" + value);
       setState(() {
-        widget.homeBloc.add(GetSearchByAliveList(
-            startYear: widget.searchStartYearCont!.text,
-            endYear: widget.searchEndYearCont!.text));
+        if (widget.currentSearch == "alive") {
+          widget.homeBloc.add(GetSearchByAliveList(
+              startYear: widget.searchStartYearCont!.text,
+              endYear: widget.searchEndYearCont!.text));
+        } else if (widget.currentSearch == "birth") {
+          widget.homeBloc.add(GetSearchByBirthList(
+              startYear: widget.searchStartYearCont!.text,
+              endYear: widget.searchEndYearCont!.text));
+        }
       });
     }
     if (widget.searchStartYearCont!.text.toString().isEmpty &&

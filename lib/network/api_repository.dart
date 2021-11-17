@@ -45,4 +45,17 @@ class ApiRepository {
       throw Exception('error getting heroes');
     }
   }
+
+  Future getSearchHeroesByBirth(String startYear, String endYear) async {
+    var response = await appDataManager.apiHelper
+        .getSearchHeroesByBirth(startYear, endYear);
+    if (NetworkUtils.isReqSuccess(response)) {
+      data = json.decode(response.body);
+      return data.map((value) {
+        return HeroesModel.fromJson(value);
+      }).toList();
+    } else {
+      throw Exception('error getting heroes');
+    }
+  }
 }

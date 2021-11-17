@@ -10,14 +10,18 @@ class ApiHelper {
 
   Future getSearchHeroesByKeyword(String keyword) async {
     var response = await http.get(Uri.parse("$baseUrl/heroes?q=$keyword"));
-    print("ini keyword " + response.body);
     return response;
   }
 
   Future getSearchHeroesByAlive(String startYear, String endYear) async {
     var response = await http.get(Uri.parse(
         "$baseUrl/heroes?alive_in_start=$startYear&alive_in_end=$endYear"));
-    print("ini keyword " + response.body);
+    return response;
+  }
+
+  Future getSearchHeroesByBirth(String startYear, String endYear) async {
+    var response = await http.get(Uri.parse(
+        "$baseUrl/heroes?birth_year_start=$startYear&birth_year_end=$endYear"));
     return response;
   }
 }

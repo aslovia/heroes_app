@@ -28,3 +28,12 @@ class GetSearchByAliveList extends HomeEvent {
   @override
   List<Object> get props => [startYear, endYear];
 }
+
+class GetSearchByBirthList extends HomeEvent {
+  final String startYear, endYear;
+
+  const GetSearchByBirthList({required this.startYear, required this.endYear});
+
+  @override
+  List<Object> get props => [startYear, endYear];
+}

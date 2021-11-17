@@ -50,7 +50,7 @@ class _HomePageState extends State<HomePage> {
             title: const Text('PAHLAWAN'),
             bottom: PreferredSize(
               preferredSize:
-                  Size.fromHeight(_currentSearch == "all" ? 50 : 100),
+                  Size.fromHeight(_currentSearch == "all" ? 60 : 100),
               child: Column(
                 children: [
                   Container(
@@ -145,9 +145,6 @@ class _HomePageState extends State<HomePage> {
   void _selectSearch(value) {
     FocusScope.of(context).requestFocus(FocusNode());
     setState(() {
-      _searchCont.clear();
-      _searchEndYearCont.clear();
-      _searchStartYearCont.clear();
       _currentSearch = value;
       if (_currentSearch == "all") {
         _homeBloc.add(GetHomeList());
@@ -155,6 +152,10 @@ class _HomePageState extends State<HomePage> {
         _homeBloc.add(GetSearchByKeywordList(keyword: _searchCont.text));
       } else if (_currentSearch == "alive") {
         _homeBloc.add(GetSearchByAliveList(
+            startYear: _searchStartYearCont.text,
+            endYear: _searchEndYearCont.text));
+      } else if (_currentSearch == "birth") {
+        _homeBloc.add(GetSearchByBirthList(
             startYear: _searchStartYearCont.text,
             endYear: _searchEndYearCont.text));
       }
