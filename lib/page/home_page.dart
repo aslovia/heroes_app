@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:heroes_app/bloc/home/home_bloc.dart';
+import 'package:heroes_app/page/search_widget.dart';
 import 'package:heroes_app/widget/home_widget.dart';
 
 class HomePage extends StatefulWidget {
@@ -12,7 +13,22 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final HomeBloc _homeBloc = HomeBloc();
+
   final TextEditingController _searchCont = TextEditingController();
+  final TextEditingController _searchStartYearCont = TextEditingController();
+  final TextEditingController _searchEndYearCont = TextEditingController();
+
+  final List _typeSearch = [
+    {'searchKey': 'all', 'searchName': 'Cari berdasarkan semua pahlawan'},
+    {'searchKey': 'keyword', 'searchName': 'Cari berdasarkan kata kunci'},
+    {
+      'searchKey': 'alive',
+      'searchName': 'Cari berdasarkan tahun periode hidup '
+    },
+    {'searchKey': 'birth', 'searchName': 'Cari berdasarkan tahun lahir'},
+    {'searchKey': 'death', 'searchName': 'Cari berdasarkan tahun meninggal'}
+  ];
+  String _currentSearch = "all";
 
   @override
   void initState() {
@@ -32,28 +48,50 @@ class _HomePageState extends State<HomePage> {
             snap: false,
             centerTitle: true,
             title: const Text('PAHLAWAN'),
-            // actions: [
-            //   IconButton(
-            //     icon: Icon(Icons.shopping_cart),
-            //     onPressed: () {},
-            //   ),
-            // ],
-            bottom: AppBar(
-              backgroundColor: const Color(0xff333236),
-              title: Container(
-                width: double.infinity,
-                height: 40,
-                color: Colors.white,
-                child: Center(
-                  child: TextField(
-                    controller: _searchCont,
-                    onChanged: onTextChanged,
-                    decoration: const InputDecoration(
-                        hintText: 'Cari dengan kata kunci',
-                        prefixIcon: Icon(Icons.search),
-                        suffixIcon: Icon(Icons.camera_alt)),
+            bottom: PreferredSize(
+              preferredSize:
+                  Size.fromHeight(_currentSearch == "all" ? 50 : 100),
+              child: Column(
+                children: [
+                  Container(
+                    margin: const EdgeInsets.all(8),
+                    width: double.infinity,
+                    height: 40,
+                    color: const Color(0xff333236),
+                    child: DropdownButtonFormField(
+                      isDense: true,
+                      items: _typeSearch.map((item) {
+                        return DropdownMenuItem(
+                            value: item['searchKey'],
+                            child: Text(
+                              item['searchName'],
+                            ));
+                      }).toList(),
+                      value: _currentSearch,
+                      onChanged: _selectSearch,
+                      decoration: InputDecoration(
+                        contentPadding: const EdgeInsets.symmetric(
+                            vertical: 10, horizontal: 10),
+                        fillColor: Colors.white,
+                        filled: true,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: Theme.of(context).focusColor)),
+                        errorBorder: const OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.red)),
+                      ),
+                    ),
                   ),
-                ),
+                  SearchWidget(
+                      currentSearch: _currentSearch,
+                      homeBloc: _homeBloc,
+                      searchCont: _searchCont,
+                      searchStartYearCont: _searchStartYearCont,
+                      searchEndYearCont: _searchEndYearCont)
+                ],
               ),
             ),
           ),
@@ -104,20 +142,23 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void onTextChanged(String value) async {
-    if (!mounted) return;
-    await Future.delayed(const Duration(seconds: 1));
-    if (value.isNotEmpty && value == _searchCont.text) {
-      print("cari" + value);
-      setState(() {
-        _homeBloc.add(GetSearchByKeywordList(keyword: _searchCont.text));
-      });
-    }
-    if (_searchCont.text.toString().isEmpty) {
-      setState(() {
+  void _selectSearch(value) {
+    FocusScope.of(context).requestFocus(FocusNode());
+    setState(() {
+      _searchCont.clear();
+      _searchEndYearCont.clear();
+      _searchStartYearCont.clear();
+      _currentSearch = value;
+      if (_currentSearch == "all") {
         _homeBloc.add(GetHomeList());
-      });
-    }
-    return;
+      } else if (_currentSearch == "keyword") {
+        _homeBloc.add(GetSearchByKeywordList(keyword: _searchCont.text));
+      } else if (_currentSearch == "alive") {
+        _homeBloc.add(GetSearchByAliveList(
+            startYear: _searchStartYearCont.text,
+            endYear: _searchEndYearCont.text));
+      }
+      print("current search " + _currentSearch);
+    });
   }
 }

@@ -25,7 +25,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           yield HomeEmptyState();
         }
       } catch (e) {
-        print("ini e " + e.toString());
         yield HomeErrorState(errorMessage: e.toString());
       }
     } else if (event is GetSearchByKeywordList) {
@@ -39,7 +38,19 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           yield HomeEmptyState();
         }
       } catch (e) {
-        print("ini e " + e.toString());
+        yield HomeErrorState(errorMessage: e.toString());
+      }
+    } else if (event is GetSearchByAliveList) {
+      try {
+        yield HomeLoadingState();
+        final List<HeroesModel> heroesModel = await apiRepository
+            .getSearchHeroesByAlive(event.startYear, event.endYear);
+        if (heroesModel.isNotEmpty) {
+          yield HomeSuccessState(heroes: heroesModel);
+        } else {
+          yield HomeEmptyState();
+        }
+      } catch (e) {
         yield HomeErrorState(errorMessage: e.toString());
       }
     }

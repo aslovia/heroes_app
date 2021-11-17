@@ -19,3 +19,12 @@ class GetSearchByKeywordList extends HomeEvent {
   @override
   List<Object> get props => [keyword];
 }
+
+class GetSearchByAliveList extends HomeEvent {
+  final String startYear, endYear;
+
+  const GetSearchByAliveList({required this.startYear, required this.endYear});
+
+  @override
+  List<Object> get props => [startYear, endYear];
+}
