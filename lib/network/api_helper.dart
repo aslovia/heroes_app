@@ -24,4 +24,10 @@ class ApiHelper {
         "$baseUrl/heroes?birth_year_start=$startYear&birth_year_end=$endYear"));
     return response;
   }
+
+  Future getSearchHeroesByDeath(String startYear, String endYear) async {
+    var response = await http.get(Uri.parse(
+        "$baseUrl/heroes?death_year_start=$startYear&death_year_end=$endYear"));
+    return response;
+  }
 }

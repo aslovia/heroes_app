@@ -27,7 +27,9 @@ class _SearchWidgetState extends State<SearchWidget> {
   Widget build(BuildContext context) {
     return widget.currentSearch == "keyword"
         ? displaySearchKeyword()
-        : widget.currentSearch == "alive" || widget.currentSearch == "birth"
+        : widget.currentSearch == "alive" ||
+                widget.currentSearch == "birth" ||
+                widget.currentSearch == "death"
             ? displaySearchAliveYear()
             : Container();
   }
@@ -63,7 +65,7 @@ class _SearchWidgetState extends State<SearchWidget> {
                   hintText: 'Tahun', prefixIcon: Icon(Icons.date_range)),
             ),
           ),
-          const Text("Sampai"),
+          const Expanded(child: Center(child: Text("Sampai"))),
           Expanded(
             child: TextField(
               controller: widget.searchEndYearCont,
@@ -110,6 +112,10 @@ class _SearchWidgetState extends State<SearchWidget> {
               endYear: widget.searchEndYearCont!.text));
         } else if (widget.currentSearch == "birth") {
           widget.homeBloc.add(GetSearchByBirthList(
+              startYear: widget.searchStartYearCont!.text,
+              endYear: widget.searchEndYearCont!.text));
+        } else if (widget.currentSearch == "death") {
+          widget.homeBloc.add(GetSearchByDeathList(
               startYear: widget.searchStartYearCont!.text,
               endYear: widget.searchEndYearCont!.text));
         }

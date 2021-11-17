@@ -58,4 +58,17 @@ class ApiRepository {
       throw Exception('error getting heroes');
     }
   }
+
+  Future getSearchHeroesByDeath(String startYear, String endYear) async {
+    var response = await appDataManager.apiHelper
+        .getSearchHeroesByDeath(startYear, endYear);
+    if (NetworkUtils.isReqSuccess(response)) {
+      data = json.decode(response.body);
+      return data.map((value) {
+        return HeroesModel.fromJson(value);
+      }).toList();
+    } else {
+      throw Exception('error getting heroes');
+    }
+  }
 }

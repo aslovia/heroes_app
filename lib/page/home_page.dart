@@ -158,6 +158,10 @@ class _HomePageState extends State<HomePage> {
         _homeBloc.add(GetSearchByBirthList(
             startYear: _searchStartYearCont.text,
             endYear: _searchEndYearCont.text));
+      } else if (_currentSearch == "death") {
+        _homeBloc.add(GetSearchByDeathList(
+            startYear: _searchStartYearCont.text,
+            endYear: _searchEndYearCont.text));
       }
       print("current search " + _currentSearch);
     });

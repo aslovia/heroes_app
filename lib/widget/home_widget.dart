@@ -38,15 +38,17 @@ class HomeWidget extends StatelessWidget {
                           'assets/images/account_picture_default.png'),
                     ),
                     const SizedBox(height: 5),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        dataHero![i].name!,
-                        style:
-                            const TextStyle(fontSize: 11, color: Colors.black),
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 2,
-                        textAlign: TextAlign.center,
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(5),
+                        child: Text(
+                          dataHero![i].name!,
+                          style:
+                              const TextStyle(fontSize: 11, color: Colors.black),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 2,
+                          textAlign: TextAlign.center,
+                        ),
                       ),
                     )
                   ],
