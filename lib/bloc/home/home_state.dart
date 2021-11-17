@@ -27,5 +27,3 @@ class HomeErrorState extends HomeState {
   @override
   String toString() => 'Error : $errorMessage';
 }
-
-class HeroesRefresh extends HomeState {}

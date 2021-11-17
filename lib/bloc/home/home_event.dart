@@ -9,8 +9,6 @@ abstract class HomeEvent extends Equatable {
 
 class GetHomeList extends HomeEvent {}
 
-class GetHomeRefresh extends HomeEvent {}
-
 class GetSearchByKeywordList extends HomeEvent {
   final String keyword;
 
