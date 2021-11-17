@@ -25,13 +25,11 @@ class _HomeWidgetState extends State<HomeWidget> {
   Future getSharedPrefs() async {
     _prefs = await SharedPreferences.getInstance();
     if (_prefs.containsKey("favoriteHero")) {
-      print("masuk shared");
       if (mounted) {
         setState(() {
           _dataHeroFavorite =
               HeroesModel.decode(_prefs.getString("favoriteHero")!);
         });
-        print("ini data hero favorite cache " + HeroesModel.encode(_dataHeroFavorite));
       }
     }
   }
@@ -97,7 +95,6 @@ class _HomeWidgetState extends State<HomeWidget> {
                       onTap: () {
                         if (_dataHeroFavorite.any(
                             (item) => item.name == widget.dataHero![i].name)) {
-                          print("masuk");
                           removeFavoriteHero(widget.dataHero![i]);
                         } else {
                           addFavoriteHero(widget.dataHero![i]);
@@ -115,26 +112,19 @@ class _HomeWidgetState extends State<HomeWidget> {
   void addFavoriteHero(HeroesModel heroFavorite) async {
     if (mounted) {
       setState(() {
-        print("ini data hero favorite add 1" + _dataHeroFavorite.toString());
         _dataHeroFavorite.add(heroFavorite);
         String encodedData = HeroesModel.encode(_dataHeroFavorite);
         _prefs.setString("favoriteHero", encodedData);
-        print("ini data hero favorite add" + encodedData.toString());
       });
     }
   }
 
   void removeFavoriteHero(HeroesModel heroFavorite) async {
-    String encodedData = HeroesModel.encode([heroFavorite]);
-    String encodedDataFav = HeroesModel.encode(_dataHeroFavorite);
-    print("ini data encode favorite remove 1" + encodedData.toString());
-    print("ini data hero favorite remove 2" + encodedDataFav.toString());
     if (mounted) {
       setState(() {
         _dataHeroFavorite.removeWhere((item) => item.name == heroFavorite.name);
         String encodedData = HeroesModel.encode(_dataHeroFavorite);
         _prefs.setString("favoriteHero", encodedData);
-        print("ini data hero favorite remove" + encodedData.toString());
       });
     }
   }
