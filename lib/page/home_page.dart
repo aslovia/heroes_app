@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:heroes_app/bloc/home/home_bloc.dart';
-import 'package:heroes_app/page/search_widget.dart';
+import 'package:heroes_app/widget/search_widget.dart';
 import 'package:heroes_app/widget/home_widget.dart';
 
 class HomePage extends StatefulWidget {

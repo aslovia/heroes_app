@@ -85,7 +85,6 @@ class _SearchWidgetState extends State<SearchWidget> {
     if (!mounted) return;
     await Future.delayed(const Duration(seconds: 1));
     if (value.isNotEmpty && value == widget.searchCont!.text) {
-      print("cari" + value);
       setState(() {
         widget.homeBloc
             .add(GetSearchByKeywordList(keyword: widget.searchCont!.text));
@@ -104,7 +103,6 @@ class _SearchWidgetState extends State<SearchWidget> {
     await Future.delayed(const Duration(seconds: 1));
     if (widget.searchStartYearCont!.text.isNotEmpty &&
         widget.searchEndYearCont!.text.isNotEmpty) {
-      print("cari" + value);
       setState(() {
         if (widget.currentSearch == "alive") {
           widget.homeBloc.add(GetSearchByAliveList(
