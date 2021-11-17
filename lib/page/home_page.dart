@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:heroes_app/bloc/home/home_bloc.dart';
 import 'package:heroes_app/page/favorite_page.dart';
+import 'package:heroes_app/widget/loading_widget.dart';
 import 'package:heroes_app/widget/search_widget.dart';
 import 'package:heroes_app/widget/home_widget.dart';
 
@@ -114,14 +115,7 @@ class _HomePageState extends State<HomePage> {
                         if (state is HomeSuccessState) {
                           return HomeWidget(dataHero: state.heroes);
                         } else if (state is HomeLoadingState) {
-                          return SizedBox(
-                            height: MediaQuery.of(context).size.height / 1.3,
-                            child: const Center(
-                              child: CircularProgressIndicator(
-                                color: Colors.black,
-                              ),
-                            ),
-                          );
+                          return const LoadingWidget();
                         } else if (state is HomeEmptyState) {
                           return SizedBox(
                               height: MediaQuery.of(context).size.height / 1.3,
