@@ -1,4 +1,4 @@
-
+import 'dart:convert';
 
 class HeroesModel {
   String? name;
@@ -23,4 +23,23 @@ class HeroesModel {
       ascensionYear: json['ascension_year'],
     );
   }
+
+  static Map<String, dynamic> toHeroJson(HeroesModel heroesModel) {
+    return {
+      'name': heroesModel.name,
+      'birth_year': heroesModel.birthYear,
+      'death_year': heroesModel.deathYear,
+      'description': heroesModel.description,
+      'ascension_year': heroesModel.ascensionYear,
+    };
+  }
+
+  static String encode(List<HeroesModel> hero) => json.encode(hero
+      .map<Map<dynamic, dynamic>>((hero) => HeroesModel.toHeroJson(hero))
+      .toList());
+
+  static List<HeroesModel> decode(String hero) =>
+      (json.decode(hero) as List<dynamic>)
+          .map<HeroesModel>((item) => HeroesModel.fromJson(item))
+          .toList();
 }
