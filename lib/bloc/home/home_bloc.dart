@@ -14,71 +14,33 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   @override
   Stream<HomeState> mapEventToState(HomeEvent event) async* {
-    if (event is GetHomeList || event is GetHomeRefresh) {
-      try {
-        yield HomeLoadingState();
-        final List<HeroesModel> heroesModel =
-            await apiRepository.getHeroesList();
-        if (heroesModel.isNotEmpty) {
-          yield HomeSuccessState(heroes: heroesModel);
-        } else {
-          yield HomeEmptyState();
-        }
-      } catch (e) {
-        yield HomeErrorState(errorMessage: e.toString());
-      }
-    } else if (event is GetSearchByKeywordList) {
-      try {
-        yield HomeLoadingState();
-        final List<HeroesModel> heroesModel =
+    try {
+      yield HomeLoadingState();
+      List<HeroesModel> heroesModel = <HeroesModel>[];
+
+      if (event is GetHomeList) {
+        heroesModel = await apiRepository.getHeroesList();
+      } else if (event is GetSearchByKeywordList) {
+        heroesModel =
             await apiRepository.getSearchHeroesByKeyword(event.keyword);
-        if (heroesModel.isNotEmpty) {
-          yield HomeSuccessState(heroes: heroesModel);
-        } else {
-          yield HomeEmptyState();
-        }
-      } catch (e) {
-        yield HomeErrorState(errorMessage: e.toString());
+      } else if (event is GetSearchByAliveList) {
+        heroesModel = await apiRepository.getSearchHeroesByAlive(
+            event.startYear, event.endYear);
+      } else if (event is GetSearchByBirthList) {
+        heroesModel = await apiRepository.getSearchHeroesByBirth(
+            event.startYear, event.endYear);
+      } else if (event is GetSearchByDeathList) {
+        heroesModel = await apiRepository.getSearchHeroesByDeath(
+            event.startYear, event.endYear);
       }
-    } else if (event is GetSearchByAliveList) {
-      try {
-        yield HomeLoadingState();
-        final List<HeroesModel> heroesModel = await apiRepository
-            .getSearchHeroesByAlive(event.startYear, event.endYear);
-        if (heroesModel.isNotEmpty) {
-          yield HomeSuccessState(heroes: heroesModel);
-        } else {
-          yield HomeEmptyState();
-        }
-      } catch (e) {
-        yield HomeErrorState(errorMessage: e.toString());
+
+      if (heroesModel.isNotEmpty) {
+        yield HomeSuccessState(heroes: heroesModel);
+      } else {
+        yield HomeEmptyState();
       }
-    } else if (event is GetSearchByBirthList) {
-      try {
-        yield HomeLoadingState();
-        final List<HeroesModel> heroesModel = await apiRepository
-            .getSearchHeroesByBirth(event.startYear, event.endYear);
-        if (heroesModel.isNotEmpty) {
-          yield HomeSuccessState(heroes: heroesModel);
-        } else {
-          yield HomeEmptyState();
-        }
-      } catch (e) {
-        yield HomeErrorState(errorMessage: e.toString());
-      }
-    } else if (event is GetSearchByDeathList) {
-      try {
-        yield HomeLoadingState();
-        final List<HeroesModel> heroesModel = await apiRepository
-            .getSearchHeroesByDeath(event.startYear, event.endYear);
-        if (heroesModel.isNotEmpty) {
-          yield HomeSuccessState(heroes: heroesModel);
-        } else {
-          yield HomeEmptyState();
-        }
-      } catch (e) {
-        yield HomeErrorState(errorMessage: e.toString());
-      }
+    } catch (e) {
+      yield HomeErrorState(errorMessage: e.toString());
     }
   }
 }
